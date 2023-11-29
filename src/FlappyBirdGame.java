@@ -14,6 +14,7 @@ public class FlappyBirdGame extends JPanel implements ActionListener {
     private boolean gameStarted;
     private boolean gameOver;
     private GameOverScreen gameOverScreen;
+    private int score;
 
     public FlappyBirdGame() {
         bird = new Bird(100, 200);
@@ -22,6 +23,7 @@ public class FlappyBirdGame extends JPanel implements ActionListener {
         gameStarted = false;
         gameOver = false;
         gameOverScreen = new GameOverScreen();
+        score = 0;
 
         timer = new Timer(20, this);
         timer.start();
@@ -40,10 +42,15 @@ public class FlappyBirdGame extends JPanel implements ActionListener {
 
         setFocusable(true);
     }
+    private void gainPoint() {
+    	score++;
+    }
 
     public void paintComponent(Graphics g) {
         super.paintComponent(g);
-
+        g.setColor(Color.BLACK);
+        g.setFont(new Font("Arial", Font.PLAIN, 16));
+        g.drawString("Score: " + score, 10, 20);
         if (!gameStarted && !gameOver) {
             // Draw start screen
             g.setColor(Color.BLACK);
@@ -56,7 +63,15 @@ public class FlappyBirdGame extends JPanel implements ActionListener {
             g.drawString(message, getWidth() / 2 - messageWidth / 2, getHeight() / 2);
         } else if (gameOver) {
             // Draw game over screen
-            gameOverScreen.paintComponent(g);
+           // gameOverScreen.paintComponent(g);
+            g.setColor(Color.BLACK);
+            g.fillRect(0, 0, getWidth(), getHeight());
+
+            g.setColor(Color.WHITE);
+            g.setFont(new Font("Arial", Font.PLAIN, 20));
+            String gameOverMessage = "Game Over! Click to restart.\n Final Score" + score;
+            int messageWidth = g.getFontMetrics().stringWidth(gameOverMessage);
+            g.drawString(gameOverMessage, getWidth() / 2 - messageWidth / 2, getHeight() / 2 - 20);
         } else {
             // Draw bird
             g.setColor(Color.RED);
@@ -93,6 +108,7 @@ public class FlappyBirdGame extends JPanel implements ActionListener {
             if (obstacles.get(0).getX() < -30) {
                 obstacles.remove(0);
                 obstacles.add(new Obstacle(400, (int) (Math.random() * 200) + 50));
+                gainPoint();
             }
         }
 
