@@ -16,7 +16,7 @@ public class Bird {
         this.velocity = 0;
         this.isBird1 = true;
 
-        loadImage("/bird1.jpg", "/bird2.png");
+        loadImage("/bird1.png", "/bird2.png");
     }
 
     private void loadImage(String bird1Path, String bird2Path) {
